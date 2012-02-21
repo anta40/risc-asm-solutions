@@ -1,0 +1,79 @@
+## Start of file if3.a
+##
+## MIPSMARK 1.1 21/4/99 Copyright 1998 J. Waldron.
+## All Rights Reserved. See the file README for
+## a full copyright notice.
+##
+## Question:
+## print out the smallest of A, B, and C
+## 
+## Output format must be:
+## "smallest num is = 1"
+
+#################################################
+#					 	#
+#		text segment			#
+#						#
+#################################################
+
+	.text		
+       	.globl __start 
+__start:		# execution starts here
+
+
+# Any changes above this line will be discarded by
+# mipsmark. Put your answer between dashed lines.
+#-------------- start cut -----------------------
+
+	lw $t0, A
+	lw $t1, B
+	lw $t2, C
+
+	
+	move $t3, $t0				# at first, assume that A is the smallest
+		
+					
+	check:					# main checking part
+	blt $t1, $t3, check_B			# is B < A? if yes then goto check_B
+	blt $t2, $t3, check_C			# otherwise goto check_C
+	j done					# either check_B & check_C are done, or they are not needed at all, which means it's done
+
+	check_B:
+		move $t3, $t1			# since B < min, then update the minimum value, which is now B
+		j check				# check the rest
+
+	check_C:
+		move $t3, $t2			# since C < min, then update the minimum value, which is now C
+		j check				# check the rest
+	
+
+	done:		
+		move $a0, $t3	
+		li $v0, 1
+		syscall
+
+		la $a0, endl
+		li $v0, 4
+		syscall
+
+		li $v0, 10
+		syscall
+
+#--------------  end cut  -----------------------
+# Any changes below this line will be discarded by
+# mipsmark. Put your answer between dashed lines.
+
+#################################################
+#                                               #
+#               data segment                    #
+#                                               #
+#################################################
+
+        .data
+A:	.word 2 
+B:	.word 3
+C:	.word 1 
+ans:	.asciiz "smallest num is = "
+endl:	.asciiz "\n"
+##
+## End of file if3.a
