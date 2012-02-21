@@ -1,14 +1,14 @@
-## Start of file math1.a
+## Start of file math4.a
 ##
 ## MIPSMARK 1.1 21/4/99 Copyright 1998 J. Waldron.
 ## All Rights Reserved. See the file README for
 ## a full copyright notice.
 ##
 ## Question:
-## calculate A*X^2+B*X+C
+## calculate (num1 + num2 - 7) * num3
 ## 
 ## Output format must be:
-## "answer = 180"
+## "answer = 48"
 
 #################################################
 #					 	#
@@ -25,22 +25,15 @@ __start:		# execution starts here
 # mipsmark. Put your answer between dashed lines.
 #-------------- start cut -----------------------
 
-	lw $t0, X
-	lw $t1, A
-	lw $t2, B
-	lw $t3, C
+	lw $t0, num1
+	lw $t1, num2
+	lw $t2, num3
 
-        mul $t4, $t0, $t0
-	mul $t4, $t4, $t1
-        mul $t5, $t2, $t0
-        add $t4, $t4, $t5
-	add $t4, $t4, $t3
+        add $t0, $t0, $t1	# $t0 = num1 + num2
+        sub $t0, $t0, 7		# $t0 = $t0 - 7
+	mul $t0, $t0, $t2	# $t0 = $t0 * 3
 
-        la $a0, ans
-    	li $v0, 4
-    	syscall
-
-     	move $a0, $t4
+        move $a0, $t0
 	li $v0, 1
 	syscall
 
@@ -62,11 +55,10 @@ __start:		# execution starts here
 #################################################
 
         .data
-X:	.word 7
-A:	.word 3
-B:	.word 4
-C:	.word 5
+num1:	.word 7
+num2:	.word 6
+num3:	.word 8
 ans:	.asciiz "answer = "
 endl:	.asciiz "\n"
 ##
-## End of file math1.a
+## End of file math4.a
