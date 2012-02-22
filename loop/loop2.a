@@ -1,0 +1,76 @@
+## Start of file loop2.a
+##
+## MIPSMARK 1.1 21/4/99 Copyright 1998 J. Waldron.
+## All Rights Reserved. See the file README for
+## a full copyright notice.
+##
+## Question:
+## calculate the number of occurrences of "letter"
+## in the string "chararray"
+##
+## Output format must be:
+## "number of occurences = 6"
+
+#################################################
+#					 	#
+#		text segment			#
+#						#
+#################################################
+
+	.text		
+       	.globl __start 
+__start:		# execution starts here
+
+
+# Any changes above this line will be discarded by
+# mipsmark. Put your answer between dashed lines.
+#-------------- start cut -----------------------
+
+	lb $t0, letter
+	li $t1, 0
+	li $t2, 0
+
+	loop:
+		lb $t3, chararray($t1)		# load first char from chararray
+		beqz $t3, done			# it char = zero, then it's done
+		bne $t3, $t0, process		# if char != 'a', then skip it
+		add $t2, $t2, 1 		# increment the count
+
+	process:
+		add $t1, $t1, 1			# increment the pointer
+		j loop
+
+	done:
+		la $a0, ans
+		li $v0, 4	
+		syscall
+
+		move $a0, $t2
+		li $v0, 1
+		syscall
+
+		la $a0, endl
+		li $v0, 4
+		syscall
+
+		li $v0, 10
+		syscall
+
+#--------------  end cut  -----------------------
+# Any changes below this line will be discarded by
+# mipsmark. Put your answer between dashed lines.
+
+#################################################
+#                                               #
+#               data segment                    #
+#                                               #
+#################################################
+
+        .data
+chararray:
+	.asciiz "abbbaabbbababab"
+letter:	.byte 'a'
+ans:	.asciiz "number of occurences = "
+endl:	.asciiz "\n"
+##
+## End of file loop2.a

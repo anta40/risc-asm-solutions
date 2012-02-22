@@ -1,0 +1,67 @@
+## Start of file loop3.a
+##
+## MIPSMARK 1.1 21/4/99 Copyright 1998 J. Waldron.
+## All Rights Reserved. See the file README for
+## a full copyright notice.
+##
+## Question:
+## Replace all occurences of 'a' with
+## 'A' in the string "chararray" and
+## print the resulting string.
+##
+## Output format must be:
+## "AbbbAAbbbAbAbAb"
+
+#################################################
+#					 	#
+#		text segment			#
+#						#
+#################################################
+
+	.text		
+       	.globl __start 
+__start:		# execution starts here
+
+
+# Any changes above this line will be discarded by
+# mipsmark. Put your answer between dashed lines.
+#-------------- start cut -----------------------
+
+	la $t0, chararray
+	li $t1, 'A'
+
+	loop:
+		lb $t2, ($t0)			# load char from chararray
+		beqz $t2, done			# if char = zero, then it's done
+		bne $t2, 'a', process		# if char != 'a', then go to next char
+		sb $t1, ($t0)			# otherwise if char = 'a', replace it  with its uppercase
+	
+	process:
+		add $t0, 1			# move pointer 1 character
+		j loop
+	
+	done:
+		la $a0, chararray 
+		li $v0, 4 
+		syscall
+
+		li $v0, 10
+		syscall
+
+
+#--------------  end cut  -----------------------
+# Any changes below this line will be discarded by
+# mipsmark. Put your answer between dashed lines.
+
+#################################################
+#                                               #
+#               data segment                    #
+#                                               #
+#################################################
+
+        .data
+chararray:
+	.asciiz "abbbaabbbababab\n"
+
+##
+## End of file loop3.a
