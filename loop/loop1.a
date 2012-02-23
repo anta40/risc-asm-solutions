@@ -28,12 +28,11 @@ __start:		# execution starts here
 
 	la $t0, array
 	lw $t1, count
-	li $t3, 0
-	li $t4, 0
+	li $t2, 0
 	
 	process:
-		lw $t2, ($t0)			# load word from the array
-		add $t4, $t2, $t2		# add it to sum
+		lw $t3, ($t0)			# load word from the array
+		add $t2, $t2, $t3		# add it to sum
 		add $t0, $t0, 4			# increment the pointer / get the next element of the array
 		sub $t1, $t1, 1			# decrement the counter
 		beqz $t1, done			# if counter = 0, then it's done
@@ -44,7 +43,7 @@ __start:		# execution starts here
 		li $v0, 4	
 		syscall
 
-		move $a0, $t4
+		move $a0, $t2
 		li $v0, 1
 		syscall
 
