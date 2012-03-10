@@ -1,0 +1,74 @@
+## Start of file loop5.a
+##
+## MIPSMARK 1.1 21/4/99 Copyright 1998 J. Waldron.
+## All Rights Reserved. See the file README for
+## a full copyright notice.
+##
+## Question:
+## Replace every second character in the
+## string "charstr" with 'X'. That is
+## the first, third, fifth etc. 
+## There will always be an even number
+## of characters in "charstr".
+##
+## Then print the resulting string.
+##
+## Output format must be:
+## "XbXdXf"
+
+#################################################
+#					 	#
+#		text segment			#
+#						#
+#################################################
+
+	.text		
+       	.globl __start 
+__start:		# execution starts here
+
+
+# Any changes above this line will be discarded by
+# mipsmark. Put your answer between dashed lines.
+#-------------- start cut -----------------------
+	
+	la $t0, charstr
+	li $t1, 'X'
+
+	loop:
+		lb $t2, ($t0)		# load first char from string
+		beqz $t2, done		# if char = zero, then it's done. otherwise...
+		j replaceWithX 		
+	
+	replaceWithX:
+		sb $t1, ($t0)		# replace the current char with 'X'
+		add $t0, 2 		# go to the next 2nd char
+		j loop
+
+	done:
+		la $a0, charstr
+		li $v0, 4
+		syscall
+
+		la $a0, endl
+		li $v0, 4
+		syscall
+
+		li $v0, 10
+		syscall
+
+#--------------  end cut  -----------------------
+# Any changes below this line will be discarded by
+# mipsmark. Put your answer between dashed lines.
+
+#################################################
+#                                               #
+#               data segment                    #
+#                                               #
+#################################################
+
+        .data
+charstr:
+	.asciiz "abcdef"
+endl:	.asciiz "\n"
+##
+## End of file loop5.a

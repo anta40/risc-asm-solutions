@@ -1,0 +1,77 @@
+## Start of file loop7.a
+##
+## MIPSMARK 1.1 21/4/99 Copyright 1998 J. Waldron.
+## All Rights Reserved. See the file README for
+## a full copyright notice.
+##
+## Question:
+## Replace the first and last character in the
+## string "charstr" with 'X'. 
+##
+## Then print the resulting string.
+##
+## Output format must be:
+## "XbcdeX"
+
+#################################################
+#					 	#
+#		text segment			#
+#						#
+#################################################
+
+	.text		
+       	.globl __start 
+__start:		# execution starts here
+
+
+# Any changes above this line will be discarded by
+# mipsmark. Put your answer between dashed lines.
+#-------------- start cut -----------------------
+
+	la $t0, charstr
+	li $t1, 'X'
+	li $t2, 1
+
+	loop:
+		lb $t3, ($t0)
+		beqz $t3, done
+		beq $t2, 1, replaceWithX
+		beq $t2, 6, replaceWithX
+		add $t2, $t2, 1
+		add $t0, $t0, 1 
+		j loop
+
+	replaceWithX:
+		sb $t1, ($t0)
+		add $t0, $t0, 1
+		add $t2, $t2, 1
+		j loop
+
+	done:
+		la $a0, charstr	
+		li $v0, 4
+		syscall
+
+		la $a0, endl
+		li $v0, 4
+		syscall
+
+		li $v0, 10
+		syscall
+
+#--------------  end cut  -----------------------
+# Any changes below this line will be discarded by
+# mipsmark. Put your answer between dashed lines.
+
+#################################################
+#                                               #
+#               data segment                    #
+#                                               #
+#################################################
+
+        .data
+charstr:
+	.asciiz "abcdef"
+endl:	.asciiz "\n"
+##
+## End of file loop7.a

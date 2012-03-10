@@ -1,0 +1,86 @@
+## Start of file loop4.a
+##
+## MIPSMARK 1.1 21/4/99 Copyright 1998 J. Waldron.
+## All Rights Reserved. See the file README for
+## a full copyright notice.
+##
+## Question:
+## Swap each pair of elements in
+## the string "chararray" and
+## print the resulting string.
+## There will always be an even number
+## of characters in "chararray".
+##
+## Output format must be:
+## "badcfe"
+
+#################################################
+#					 	#
+#		text segment			#
+#						#
+#################################################
+
+	.text		
+       	.globl __start 
+__start:		# execution starts here
+
+
+# Any changes above this line will be discarded by
+# mipsmark. Put your answer between dashed lines.
+#-------------- start cut -----------------------
+
+	la $t0, chararray
+	li $t1, 0				# $t1 stores the flag: 0 = convert to uppercase, 1 = convert to lowercase
+
+	loop:
+		lb $t2, ($t0)			# load char from array
+		beqz $t2, done			# if char = zero, then it's done. otherwise...
+		beqz $t1, proc1			# current flag = 0
+		bnez $t1, proc2			# current flag = 1
+		j loop
+
+	proc1:
+		add $t3, $t2, 1			# convert the current char to uppercase
+		sb $t3, ($t0)			# store it in the original array
+		li $t1, 1			# flip the flag
+		add $t0, 1			# go to next char
+		j loop
+
+	proc2:
+		add $t3, $t2, -1		# convert the current char to lowercase
+		sb $t3, ($t0)			# store in in the orginal array
+		li $t1, 0			# flip the flag
+		add $t0, 1			# go to next char
+		j loop
+
+
+	done:
+		la $a0, chararray
+		li $v0, 4	
+		syscall
+
+		la $a0, endl
+		li $v0, 4
+		syscall
+
+		li $v0, 10
+		syscall
+
+
+#--------------  end cut  -----------------------
+# Any changes below this line will be discarded by
+# mipsmark. Put your answer between dashed lines.
+
+#################################################
+#                                               #
+#               data segment                    #
+#                                               #
+#################################################
+
+        .data
+chararray:
+	.asciiz "abcdef"
+endl:	.asciiz "\n"
+
+##
+## End of file loop4.a

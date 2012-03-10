@@ -1,0 +1,81 @@
+## Start of file loop6.a
+##
+## MIPSMARK 1.1 21/4/99 Copyright 1998 J. Waldron.
+## All Rights Reserved. See the file README for
+## a full copyright notice.
+##
+## Question:
+## "numbers" is an array of five words.
+## Calculate the sum of all elements in "numbers"
+## whose value is less than 1000.
+##
+## Output format must be:
+## "sum = 11"
+
+#################################################
+#					 	#
+#		text segment			#
+#						#
+#################################################
+
+	.text		
+       	.globl __start 
+__start:		# execution starts here
+
+
+# Any changes above this line will be discarded by
+# mipsmark. Put your answer between dashed lines.
+#-------------- start cut -----------------------
+
+	la $t0, numbers
+	li $t1, 5				# counter
+	li $t2, 0				# sum
+
+	loop:
+		lw $t3, ($t0)
+		beqz $t1, done
+		bnez $t1, process
+
+	process:
+		blt $t3, 1000, sum
+		add $t0, $t0, 1
+		sub $t1, 1
+		j loop
+
+	sum:
+		add $t2, $t2, $t3
+		j loop
+
+	done:
+		la $a0, ans
+		li $v0, 4
+		syscall
+
+		move $a0, $t2
+		li $v0, 1
+		syscall
+
+		la $a0, endl
+		li $v0, 4
+		syscall
+
+		li $v0, 10
+		syscall
+
+#--------------  end cut  -----------------------
+# Any changes below this line will be discarded by
+# mipsmark. Put your answer between dashed lines.
+
+#################################################
+#                                               #
+#               data segment                    #
+#                                               #
+#################################################
+
+        .data
+numbers:	
+	.word 3,12,2,6,2
+ans:	.asciiz "sum = "
+endl:	.asciiz "\n"
+##
+## End of file loop6.a
